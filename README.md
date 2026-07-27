@@ -46,6 +46,18 @@ No public, documented APIs were found. Southern Company publishes no developer p
 
 Full probe log with HTTP status for every URL is in [review.yml](review.yml).
 
+## Artifacts
+
+Enrichment round 2026-07-27. Every artifact below records what was probed, including the absences — nothing here is inferred.
+
+- [well-known/southern-company-well-known.yml](well-known/southern-company-well-known.yml) — 22 `/.well-known/` probes across 5 hosts, **0 documents found**. `webauth.southernco.com` answers the OIDC and OAuth discovery paths with an HTTP 302 into an ASP.NET `/FriendlyError.html`, not with metadata. No `WellKnown` pointer is wired, because there is no catalog to point at.
+- [security/southern-company-domain-security.yml](security/southern-company-domain-security.yml) — TLS/HSTS for five hosts and DNSSEC/CAA/SPF/DMARC for both registrable domains. Every host presents the same shared Imperva DV certificate (`CN=imperva.com`); HSTS `max-age` is inconsistent across the estate (86,400s on the API gateway, 31,536,000s on the corporate site); no DNSSEC and no CAA on either domain; SPF and DMARC `p=reject` on both.
+- [conformance/southern-company-conformance.yml](conformance/southern-company-conformance.yml) — the standards a US utility of this size could adopt, each evaluated on probe evidence. Green Button/ESPI, IEEE 2030.5, OpenADR, OCPP/OCPI, IEC CIM, OAuth 2.0, OIDC, RFC 9116 and RFC 9727 all read `false`. The one `true` is the FERC market-disclosure obligation — met with HTML, not with data.
+- [packages/southern-company-packages.yml](packages/southern-company-packages.yml) — **zero official SDKs** in any registry, and no GitHub organization. Two community npm libraries are recorded with `official: false`.
+- [llms/southern-company-llms.txt](llms/southern-company-llms.txt) — generated agent-facing summary; Southern Company serves no `llms.txt` of its own (404).
+
+No `openapi/`, `asyncapi/`, `graphql/`, `mcp/`, `skills/`, `authentication/`, `scopes/`, `errors/` or `lifecycle/` artifacts exist, because there is no contract, event surface, auth model or lifecycle policy published to derive them from. No vulnerability-disclosure programme and no trust centre were found (`vdp=none trust=none`).
+
 ## Common Properties
 
 - [Website](https://www.southerncompany.com/)
@@ -53,6 +65,13 @@ Full probe log with HTTP status for every URL is in [review.yml](review.yml).
 - [Blog](https://www.southerncompany.com/newsroom.html)
 - [Support](https://customerservice2.southerncompany.com/CustService/Overview?mnuOpco=GPC)
 - [Login](https://customerservice2.southerncompany.com/)
+- [Contact](https://www.southerncompany.com/contact-us.html)
+- [Privacy Policy](https://www.southerncompany.com/privacy-statement.html)
+- [Terms of Service](https://www.southerncompany.com/terms-and-conditions.html)
+- [Investors](https://investor.southerncompany.com/)
+- [Careers](https://southerncompany.jobs/)
+- [Sustainability](https://www.southerncompany.com/sustainability.html)
+- [Reports](https://www.southerncompany.com/solutions/sustainability/data-downloads-reports.html)
 - [LinkedIn](https://www.linkedin.com/company/southern-company)
 
 ## Maintainers

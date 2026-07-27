@@ -39,6 +39,14 @@ modified: '2026-07-27'
 specificationVersion: '0.19'
 apis: []
 common:
+- type: DomainSecurity
+  url: security/southern-company-domain-security.yml
+- type: Conformance
+  url: conformance/southern-company-conformance.yml
+- type: Packages
+  url: packages/southern-company-packages.yml
+- type: LLMsTxt
+  url: llms/southern-company-llms.txt
 - type: Website
   url: https://www.southerncompany.com/
 - type: About
@@ -49,6 +57,20 @@ common:
   url: https://customerservice2.southerncompany.com/CustService/Overview?mnuOpco=GPC
 - type: Login
   url: https://customerservice2.southerncompany.com/
+- type: Contact
+  url: https://www.southerncompany.com/contact-us.html
+- type: PrivacyPolicy
+  url: https://www.southerncompany.com/privacy-statement.html
+- type: TermsOfService
+  url: https://www.southerncompany.com/terms-and-conditions.html
+- type: Investors
+  url: https://investor.southerncompany.com/
+- type: Careers
+  url: https://southerncompany.jobs/
+- type: Sustainability
+  url: https://www.southerncompany.com/sustainability.html
+- type: Reports
+  url: https://www.southerncompany.com/solutions/sustainability/data-downloads-reports.html
 - type: LinkedIn
   url: https://www.linkedin.com/company/southern-company
 maintainers:

@@ -1,0 +1,85 @@
+generated: '2026-07-27'
+method: derived
+source: review.yml probe log (2026-07-27) + this round's contract-discovery and
+  /.well-known/ probes; no OpenAPI, AsyncAPI or GraphQL artifact exists in this repo to
+  derive from
+summary: >-
+  Nothing to conform to. Southern Company publishes no machine-readable API contract, no
+  authorization server metadata and no consumer energy-data interface, so every standard that
+  would normally apply to a utility of this size evaluates to `conforms: false` on evidence of
+  absence rather than on a failed check. The sector-relevant entries (Green Button/ESPI,
+  IEEE 2030.5, OpenADR, IEC CIM) matter most: these are the standards a US utility would adopt
+  voluntarily, and none appears on any public Southern Company surface.
+standards:
+- id: openapi
+  conforms: false
+  evidence: >-
+    no OpenAPI/Swagger document found on any host; api.southernco.com returns the Apigee
+    ApplicationNotFound fault for /openapi.json, /openapi.yaml, /swagger.json,
+    /v1/openapi.json, /api-docs, /docs and /redoc
+- id: graphql
+  conforms: false
+  evidence: /graphql returns 404 on api.southernco.com and www.southerncompany.com
+- id: asyncapi
+  conforms: false
+  evidence: no event, streaming or webhook surface published
+- id: oauth2
+  conforms: false
+  evidence: >-
+    no RFC 8414 authorization-server metadata anonymously served; webauth.southernco.com
+    /.well-known/oauth-authorization-server 302s into an ASP.NET FriendlyError page
+- id: oidc
+  conforms: false
+  evidence: >-
+    /.well-known/openid-configuration returns 404 on www.southerncompany.com,
+    customerservice2.southerncompany.com and api.southernco.com, and 302s to an error page on
+    webauth.southernco.com
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on all five probed hosts
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on www.southerncompany.com and api.southernco.com
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    no API surface to evaluate; the only machine-readable error observed is the Apigee
+    proprietary fault envelope {"fault":{"faultstring":...,"detail":{"errorcode":...}}}
+- id: green-button-espi
+  conforms: false
+  evidence: >-
+    no ESPI endpoint, no Download My Data / Connect My Data affordance, and no Southern
+    Company entity listed on the Green Button Alliance certification page
+    (greenbuttonalliance.org/testing, probed 2026-07-27)
+- id: ieee-2030.5
+  conforms: false
+  evidence: no reference on any probed Southern Company property
+- id: openadr
+  conforms: false
+  evidence: no reference on any probed Southern Company property
+- id: ocpp-ocpi
+  conforms: false
+  evidence: no reference on any probed Southern Company property
+- id: iec-cim-61968-61970
+  conforms: false
+  evidence: no reference on any probed Southern Company property
+- id: ferc-order-889-oasis
+  conforms: unverified
+  evidence: >-
+    Southern Company references an OASIS node at www.oasis.oati.com/SOCO in its own tariff
+    documents, but the host could not be verified from this environment (TLS handshake stalls,
+    curl HTTP 000). Recorded as unverified, not as conformance.
+- id: ferc-market-disclosure
+  conforms: true
+  evidence: >-
+    Auction clearing prices and weighted-average hour-ahead transaction prices ARE posted
+    publicly (both HTTP 200) — but as Adobe AEM HTML pages with zero linked CSV/XLS/JSON/XML
+    files. The disclosure obligation is met; open machine-readable data is not produced.
+  note: >-
+    This is the only `true` in the list, and it is a documentation obligation rather than a
+    technical API standard.
+compliance_program_published: false
+compliance_note: >-
+  No trust centre, no SOC 2 / ISO 27001 / PCI / HIPAA / FedRAMP certification page and no
+  vulnerability-disclosure programme were found (probe-security-programs.py 2026-07-27:
+  vdp=none, trust=none), so NO `Compliance` or `TrustCenter` pointer is emitted.

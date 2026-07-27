@@ -1,0 +1,69 @@
+generated: '2026-07-27'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml hosts, the Apigee gateway host and the
+  customer-portal hosts named in review.yml
+note: >-
+  Every Southern Company host probed terminates TLS on the Imperva edge and presents the
+  same shared GlobalSign DV certificate (subject CN=imperva.com, expires Oct 15 2026) on an
+  anonymous handshake — there is no customer-named certificate on the default response.
+  HSTS is present everywhere but the max-age is inconsistent across the estate (86,400s on
+  the API gateway vs 31,536,000s on the corporate site). Neither registrable domain signs
+  with DNSSEC or publishes a CAA record; both publish SPF and a DMARC policy of `reject`.
+hosts:
+- host: www.southerncompany.com
+  https: true
+  tls_version: TLSv1.3
+  cert_subject: CN=imperva.com
+  cert_issuer: GlobalSign Atlas R46 DV TLS CA 2026 Q2
+  cert_expires: Oct 15 01:33:25 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: api.southernco.com
+  https: true
+  tls_version: TLSv1.3
+  cert_subject: CN=imperva.com
+  cert_issuer: GlobalSign Atlas R46 DV TLS CA 2026 Q2
+  cert_expires: Oct 15 01:33:25 2026 GMT
+  hsts: true
+  hsts_max_age: 86400
+  note: Apigee Edge gateway; every path returns the ApplicationNotFound fault (see review.yml)
+- host: customerservice2.southerncompany.com
+  https: true
+  tls_version: TLSv1.3
+  cert_subject: CN=imperva.com
+  cert_issuer: GlobalSign Atlas R46 DV TLS CA 2026 Q2
+  cert_expires: Oct 15 01:33:25 2026 GMT
+  hsts: true
+  hsts_max_age: 15552000
+- host: webauth.southernco.com
+  https: true
+  tls_version: TLSv1.3
+  cert_subject: CN=imperva.com
+  cert_issuer: GlobalSign Atlas R46 DV TLS CA 2026 Q2
+  cert_expires: Oct 15 01:33:25 2026 GMT
+  hsts: true
+  hsts_max_age: 15552000
+- host: www.georgiapower.com
+  https: true
+  tls_version: TLSv1.3
+  cert_subject: CN=imperva.com
+  cert_issuer: GlobalSign Atlas R46 DV TLS CA 2026 Q2
+  cert_expires: Oct 15 01:33:25 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: southerncompany.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject
+- domain: southernco.com
+  dnssec: false
+  caa: []
+  spf: true
+  spf_record: v=spf1 redirect=spf-enabled.southernco.com
+  dmarc: true
+  dmarc_policy: reject
+  dmarc_record: 'v=DMARC1; p=reject; aspf=s; pct=100; fo=1; rua=mailto:dmarc_rua@emaildefense.proofpoint.com;
+    ruf=mailto:dmarc_ruf@emaildefense.proofpoint.com'

@@ -1,0 +1,62 @@
+generated: '2026-07-27'
+method: searched
+source: npm registry API (registry.npmjs.org), PyPI, Packagist, RubyGems, pkg.go.dev,
+  NuGet, Maven Central and crates.io searches for "southern company" / "southernco"
+summary: >-
+  Southern Company publishes NO first-party client libraries in any package registry. It has
+  no GitHub organization (api.github.com/orgs/southerncompany returns 404) and no SDK page on
+  any public property. The only packages that exist are two community libraries that
+  reverse-engineer the customer web-login flow — they are recorded here for accuracy and are
+  explicitly `official: false`. Because zero official SDKs were found, this repo deliberately
+  carries NO `SDKs` pointer in apis.yml.
+official_packages: 0
+packages:
+- language: javascript
+  registry: npm
+  name: southern-company-api
+  version: 4.1.0
+  url: https://www.npmjs.com/package/southern-company-api
+  install: npm install southern-company-api
+  repository: https://github.com/apearson/southern-company-api
+  license: MIT
+  official: false
+  description: >-
+    Community library that pulls power-usage data by logging in as the customer — scrapes a
+    RequestVerificationToken from the login page, POSTs to webauth.southernco.com/api/login,
+    then exchanges for a JWT at
+    customerservice2.southerncompany.com/Account/LoginValidated/JwtToken.
+  note: >-
+    Unofficial and unsupported. Evidence that internal APIs exist; NOT evidence of a
+    published one. Deliberately absent from apis.yml apis[].
+  last_published: '2026-04-28'
+- language: javascript
+  registry: npm
+  name: nicor-bills
+  version: 1.1.0
+  url: https://www.npmjs.com/package/nicor-bills
+  install: npm install nicor-bills
+  repository: https://github.com/wesleyzloza/nicor-bills
+  license: MIT
+  official: false
+  description: >-
+    Community library that bulk-downloads utility bills from the Nicor Gas / Southern Company
+    web portal (customerportal.southerncompany.com) via cookie authentication.
+  note: Unofficial; screen/portal automation, not an API client.
+  last_published: '2025-02-01'
+registries_probed:
+- registry: npm
+  result: 2 community packages, 0 official
+- registry: pypi
+  result: none
+- registry: maven-central
+  result: none
+- registry: nuget
+  result: none
+- registry: pkg.go.dev
+  result: none
+- registry: rubygems
+  result: none
+- registry: packagist
+  result: none
+- registry: crates.io
+  result: none

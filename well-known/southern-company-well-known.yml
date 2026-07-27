@@ -1,0 +1,90 @@
+generated: '2026-07-27'
+method: searched
+source: live probes of every Southern Company host known to the profile
+summary: >-
+  Southern Company publishes NO /.well-known/ discovery surface on any host. Twenty-two
+  probes across five hosts returned zero documents: no RFC 9116 security.txt, no OIDC
+  discovery, no RFC 8414 authorization-server metadata, no RFC 9727 api-catalog, no
+  ai-plugin.json. The two responses that are not outright 404s are still misses — the
+  shared web-authentication host webauth.southernco.com answers the OIDC and OAuth
+  discovery paths with an HTTP 302 into an ASP.NET /FriendlyError.html page rather than a
+  metadata document, and developer.southernco.com answers everything with the Imperva
+  bot-challenge 503. This is an absence verified by probing, not an assumption.
+documents_found: 0
+hosts_probed:
+- https://www.southerncompany.com
+- https://api.southernco.com
+- https://customerservice2.southerncompany.com
+- https://webauth.southernco.com
+- https://developer.southernco.com
+documents:
+- host: https://www.southerncompany.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://www.southerncompany.com
+  path: /security.txt
+  status: 404
+- host: https://www.southerncompany.com
+  path: /.well-known/openid-configuration
+  status: 404
+- host: https://www.southerncompany.com
+  path: /.well-known/oauth-authorization-server
+  status: 404
+- host: https://www.southerncompany.com
+  path: /.well-known/api-catalog
+  status: 404
+- host: https://www.southerncompany.com
+  path: /.well-known/ai-plugin.json
+  status: 404
+- host: https://southerncompany.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://www.southernco.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://api.southernco.com
+  path: /.well-known/security.txt
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- host: https://api.southernco.com
+  path: /.well-known/api-catalog
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- host: https://api.southernco.com
+  path: /.well-known/openid-configuration
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- host: https://api.southernco.com
+  path: /.well-known/oauth-authorization-server
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- host: https://api.southernco.com
+  path: /.well-known/oauth-protected-resource
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- host: https://webauth.southernco.com
+  path: /.well-known/openid-configuration
+  status: 302
+  note: >-
+    redirects to /FriendlyError.html?aspxerrorpath=/.well-known/openid-configuration — an
+    ASP.NET error page, NOT an OIDC discovery document. No metadata is served anonymously.
+- host: https://webauth.southernco.com
+  path: /.well-known/oauth-authorization-server
+  status: 302
+  note: redirects to the same /FriendlyError.html page; no RFC 8414 metadata
+- host: https://customerservice2.southerncompany.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://customerservice2.southerncompany.com
+  path: /.well-known/openid-configuration
+  status: 404
+- host: https://developer.southernco.com
+  path: /.well-known/security.txt
+  status: 503
+  note: Imperva bot-challenge; no content ever served
+- host: https://www.georgiapower.com
+  path: /.well-known/security.txt
+  status: 404
+- host: https://www.alabamapower.com
+  path: /.well-known/security.txt
+  status: 404
