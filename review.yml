@@ -1,0 +1,323 @@
+aid: southern-company
+name: Southern Company
+review:
+  question: >-
+    Does Southern Company expose a documented public API — for consumer energy data, for market
+    data, or for anything else — and does any consumer-data mandate apply to it?
+  answer: false
+  date: '2026-07-27'
+  reviewer: API Evangelist
+  homeMarket: United States
+  tier: utility-retailer
+  primaryDomain: southerncompany.com
+
+energyDataPosture:
+  mandateRegime: none
+  mandateRegimeVerbatim: >-
+    No consumer energy-data mandate applies to Southern Company. Its regulated electric utilities
+    operate in Alabama, Georgia and Mississippi; its gas utilities in Georgia, Tennessee, Illinois
+    and Virginia. None of those states has adopted a Green Button mandate of the Ontario kind, and
+    the United States has no federal energy analogue to the Australian Consumer Data Right. Green
+    Button (NAESB/NIST ESPI) exists as a real standard in this market but nothing compels a US
+    utility to adopt it, and Southern Company has not.
+  mandateStatus: none
+  mandateStatusEvidence: >-
+    Recorded as `none` rather than `green-button-voluntary` because no voluntary adoption was found
+    either. Southern Company, Georgia Power, Alabama Power and Mississippi Power are not named on
+    the Green Button Alliance certification page (https://www.greenbuttonalliance.org/testing,
+    HTTP 200 after redirect from /certification; the only organizations named there are the
+    sponsor members Con Edison, Enbridge Gas and UtilityAPI). No Download My Data or Connect My
+    Data affordance appears on any Southern Company property probed. No ESPI/Green Button endpoint,
+    authorization server, or `.well-known` document was found on any Southern Company host. This is
+    an absence verified by probing, not a claim repeated from the company.
+
+  dataStandard: no standard reference found
+  dataStandardNote: >-
+    No Green Button/ESPI, no CDR Consumer Data Standards, no IEEE 2030.5, no OpenADR, no OCPP/OCPI,
+    no IEC CIM 61968/61970 reference was found on any public Southern Company surface. A single
+    case-insensitive substring hit for "espi" inside the My Power Usage HTML shell could not be
+    resolved to any ESPI reference on inspection and is not treated as evidence.
+
+  consumerVsMarketSplit:
+    consumerDataApi: false
+    consumerDataDetail: >-
+      A third party cannot obtain an individual customer's usage or billing data through any
+      documented API. The three real paths are all non-API: (1) the customer logs in to My Power
+      Usage at customerservice2.southerncompany.com/Billing/MyPowerUsage (HTTP 200, an
+      8,571-byte JavaScript login shell — the data itself is behind authentication) and exports
+      their own interval data to a spreadsheet; (2) commercial and industrial customers use the
+      EnergyDirect portal for interval usage with Excel/CSV/PDF export; (3) a third party receives
+      up to twelve months of billing history only after the customer signs a paper "Release of
+      Billing History to Third Party" authorization. There is no consent API, no accreditation
+      scheme, and no machine-readable consumer data surface of any kind.
+    marketDataOpen: false
+    marketDataDetail: >-
+      Southern Company is its own balancing authority in SERC and does not belong to an ISO/RTO, so
+      there is no ISO market feed to publish. It does post FERC-required wholesale market
+      information anonymously as web pages — Auction Clearing Prices
+      (/about/energy-auction/auction-clearing-prices.html, HTTP 200) and Weighted Average
+      Hour-Ahead Transaction Prices
+      (/about/our-business/weighted-average-hour-ahead-transaction-prices.html, HTTP 200) — but
+      both are Adobe AEM pages whose 45KB payloads contain only navigation chrome. Grepping each
+      payload for href values ending in .xls/.xlsx/.csv/.pdf/.zip/.xml/.json returned zero matches,
+      and grepping for api/.json/servlet/graphql/bin paths returned only a Google Fonts URL. Public
+      posting exists; open machine-readable market data does not. This is the finding: the
+      disclosure obligation was met with HTML, not with data.
+    oasisNote: >-
+      Southern Company maintains a FERC Order 889 OASIS node at www.oasis.oati.com/SOCO (referenced
+      in its own tariff documents). It could NOT be verified from this environment: DNS resolves to
+      216.234.82.8 and 174.141.249.8, but the TLS handshake stalls and curl returns HTTP 000 on
+      /SOCO/index.html and on the SOCOdocs PDF paths; a fetch through the rendering proxy failed
+      with "unable to get local issuer certificate". Recorded as unverified, not as open data.
+
+  accessGate: customer-account-required
+  accessGateDetail: >-
+    What a developer must actually do to get in: nothing works. There is no signup, no application
+    form, no key issuance, no sandbox, and no partner program published for API access. The only
+    route to any Southern Company data is to be the account holder and log in to the customer
+    portal, or to hold a signed customer authorization and receive billing history out of band. A
+    would-be integrator has no self-serve or reviewed path.
+  authModel: >-
+    No public authentication scheme is documented. /.well-known/openid-configuration returned
+    HTTP 404 on both www.southerncompany.com and customerservice2.southerncompany.com — nothing is
+    served anonymously. The customer portal uses a session/JWT flow issued by
+    webauth.southernco.com, but it is an internal web-application login, not a published developer
+    auth model, and no OAuth 2.0 authorization server, scope catalog, mTLS profile or accreditation
+    scheme is exposed.
+
+apiGatewayFinding:
+  summary: >-
+    Southern Company runs a production Apigee Edge API gateway. It is live and answering, but no
+    proxy is reachable and nothing is documented — the platform exists inside the company and stops
+    at the edge.
+  host: api.southernco.com
+  evidence: >-
+    Every probed path returns HTTP 404 with the Apigee fault body
+    {"fault":{"faultstring":"Unable to identify proxy for host: PrProdVHost and url: ...",
+    "detail":{"errorcode":"messaging.adaptors.http.flow.ApplicationNotFound"}}} — a live Apigee
+    router with no matching API proxy, fronted by Imperva (x-cdn: Imperva) and instrumented with
+    Dynatrace (dtCookie). Paths probed: / , /openapi.json , /swagger.json , /v1 , /apis , /status ,
+    /health , /.well-known/openid-configuration , /oauth/token — all HTTP 404, all the same fault.
+  developerPortalHost: developer.southernco.com
+  developerPortalEvidence: >-
+    Resolves and is served by Imperva, but returns HTTP 503 with retry-after: 5 and an 883-byte
+    _Incapsula_Resource bot-challenge body, both with a plain user agent and with a full browser
+    header set (Accept, Accept-Language, Sec-Fetch-*). NOT confirmed to be a real developer portal —
+    it may be an Apigee developer portal behind a bot wall, or a placeholder. No content was ever
+    served, so it is not recorded as a developer portal in apis.yml.
+
+probes:
+- url: https://southerncompany.com/
+  status: 200
+  note: redirects to https://www.southerncompany.com/
+- url: https://www.southerncompany.com/
+  status: 200
+  note: Adobe AEM corporate site. No developer, API or open-data section anywhere in the sitemap.
+- url: https://www.southernco.com/
+  status: 200
+  note: redirects to https://www.southerncompany.com/
+- url: https://developer.southerncompany.com/
+  status: 000
+  note: does not resolve
+- url: https://developers.southerncompany.com/
+  status: 000
+  note: does not resolve
+- url: https://api.southerncompany.com/
+  status: 000
+  note: does not resolve
+- url: https://docs.southerncompany.com/
+  status: 000
+  note: does not resolve
+- url: https://data.southerncompany.com/
+  status: 000
+  note: does not resolve
+- url: https://opendata.southerncompany.com/
+  status: 000
+  note: does not resolve
+- url: https://developer.southernco.com/
+  status: 503
+  note: resolves; Imperva bot-challenge body, never served content
+- url: https://api.southernco.com/
+  status: 404
+  note: LIVE Apigee Edge gateway — ApplicationNotFound fault, no proxy published
+- url: https://api.southernco.com/openapi.json
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/swagger.json
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/v1
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/apis
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/status
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/health
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/oauth/token
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://api.southernco.com/.well-known/openid-configuration
+  status: 404
+  note: Apigee ApplicationNotFound fault
+- url: https://www.southerncompany.com/developers
+  status: 404
+- url: https://www.southerncompany.com/developer
+  status: 404
+- url: https://www.southerncompany.com/api
+  status: 404
+- url: https://www.southerncompany.com/docs
+  status: 404
+- url: https://www.southerncompany.com/data
+  status: 404
+- url: https://www.southerncompany.com/openapi.json
+  status: 404
+- url: https://www.southerncompany.com/swagger.json
+  status: 404
+- url: https://www.southerncompany.com/api-docs
+  status: 404
+- url: https://www.southerncompany.com/.well-known/openid-configuration
+  status: 404
+- url: https://www.southerncompany.com/.well-known/security.txt
+  status: 404
+- url: https://www.southerncompany.com/.well-known/ai-plugin.json
+  status: 404
+- url: https://customerservice2.southerncompany.com/.well-known/openid-configuration
+  status: 404
+- url: https://www.southerncompany.com/robots.txt
+  status: 200
+  note: three lines; disallows only search-results and test-pages; no API paths referenced
+- url: https://www.southerncompany.com/sitemap.xml
+  status: 200
+  note: no developer, api, docs, data or open-data URL anywhere in the sitemap
+- url: https://www.southerncompany.com/about/our-business/our-companies.html
+  status: 200
+  note: source for the subsidiary list and the ~9 million customer figure
+- url: https://www.southerncompany.com/about/energy-auction.html
+  status: 200
+  note: FERC-approved day-ahead and hour-ahead bid-based energy auction; participation requires registration
+- url: https://www.southerncompany.com/about/energy-auction/auction-clearing-prices.html
+  status: 200
+  note: 45,423-byte AEM page, navigation chrome only, zero data files linked
+- url: https://www.southerncompany.com/about/our-business/weighted-average-hour-ahead-transaction-prices.html
+  status: 200
+  note: 45,286-byte AEM page, navigation chrome only, zero data files linked
+- url: https://customerservice2.southerncompany.com/Billing/MyPowerUsage?mnuOpco=GPC
+  status: 200
+  note: 8,571-byte JavaScript login shell; usage data is behind customer authentication
+- url: https://customerservice2.southerncompany.com/
+  status: 200
+  note: customer service portal, login-walled
+- url: https://customerportal.southerncompany.com/
+  status: 200
+  note: Nicor Gas customer portal, login-walled
+- url: https://webauth.southernco.com/
+  status: 200
+  note: shared web authentication host for the customer portals; no public OIDC discovery document
+- url: https://simpl.southernco.com/
+  status: 200
+  note: SIMPL interconnection-request application; browser-compatibility landing page, application behind login, no API or export documented
+- url: https://www.georgiapower.com/
+  status: 200
+- url: https://www.alabamapower.com/
+  status: 200
+- url: https://www.mississippipower.com/
+  status: 200
+- url: https://www.southerncompanygas.com/
+  status: 200
+- url: https://developer.georgiapower.com/
+  status: 000
+  note: does not resolve
+- url: https://api.georgiapower.com/
+  status: 000
+  note: does not resolve
+- url: https://data.georgiapower.com/
+  status: 000
+  note: does not resolve
+- url: https://www.georgiapower.com/residential/billing-and-rates/green-button.html
+  status: 404
+  note: probed on the hypothesis that a Green Button page exists; it does not
+- url: https://www.georgiapower.com/business/industry-services/construction/developers.html
+  status: 200
+  note: >-
+    HOMONYM TRAP. Titled "Developers Portal" and it is the top result for "Georgia Power developer
+    portal", but it serves real-estate and construction developers — rate schedules, meter base
+    pickup, wiring approval, the BlueBook. No API, no data feed, no developer keys. Not a developer
+    portal in the software sense and deliberately not recorded as one.
+- url: https://www.greenbuttonalliance.org/certification
+  status: 200
+  note: redirects to /testing
+- url: https://www.greenbuttonalliance.org/testing
+  status: 200
+  note: no Southern Company entity named; sponsors named are Con Edison, Enbridge Gas, UtilityAPI
+- url: https://www.oasis.oati.com/SOCO/index.html
+  status: 000
+  note: DNS resolves (216.234.82.8, 174.141.249.8) but TLS handshake stalls; unverifiable here
+- url: https://api.github.com/orgs/southerncompany
+  status: 404
+  note: no GitHub organization
+- url: https://api.github.com/users/SouthernCompany
+  status: 200
+  note: >-
+    a personal GitHub USER account (id 45999825, type User), not the utility's organization.
+    Deliberately NOT recorded in apis.yml as a GitHubOrganization.
+
+unofficialSurfaces:
+  summary: >-
+    The only programmatic access to Southern Company customer data that exists in the wild is
+    unofficial and reverse-engineered. It is recorded here for accuracy and is deliberately absent
+    from apis.yml, because an undocumented internal endpoint scraped out of a login flow is not a
+    published API.
+  library: https://github.com/apearson/southern-company-api
+  libraryNote: >-
+    A Node.js library that logs in as the customer by scraping a RequestVerificationToken from the
+    login page, POSTing to webauth.southernco.com/api/login, then exchanging for a JWT at
+    customerservice2.southerncompany.com/Account/LoginValidated/JwtToken (and cookie auth against
+    customerportal.southerncompany.com for Nicor Gas). It carries no official support and no terms
+    grant. It is evidence that Southern Company has internal APIs; it is not evidence of a public
+    one.
+  eixClaim: >-
+    A third-party vendor page (nectarclimate.com/utilities/georgia-power-co) states that a "Southern
+    Company Energy Information eXchange (EIX)" is "being developed as an API-based data sharing
+    platform for approved customers and partners". NO Southern Company source for EIX was found on
+    any probed property, and no EIX host, documentation or endpoint could be located. Recorded as an
+    UNVERIFIED secondary claim. A vendor page is not an implementation.
+
+findings:
+  developerPortal: none confirmed
+  openAPIsHarvested: 0
+  specsHarvested: 0
+  gated: true
+  conclusion: >-
+    Southern Company is a clean example of the sector's central lesson read from the other
+    direction. Where Australia has a mandate and a partial implementation, Southern Company has
+    neither — no obligation exists, so nothing was built, and the result is a nine-million-customer
+    utility with a production API gateway serving nobody. Both halves of the two-speed split are
+    closed: consumer data reaches third parties only via a signed paper form, and the market data
+    the regulator requires it to publish is published as HTML that contains no data. The one
+    genuinely interesting artifact is api.southernco.com — proof that the platform capability is
+    already in place and that the missing ingredient is a reason to open it.
+
+sources:
+- url: https://www.southerncompany.com/about/our-business/our-companies.html
+  type: About
+  note: subsidiary list, ~9 million customers, 27,000+ miles of transmission, 3,700 substations
+- url: https://www.southerncompany.com/about/energy-auction.html
+  type: Documentation
+  note: FERC-approved bid-based day-ahead and hour-ahead energy auction, effective April 23, 2009
+- url: https://www.greenbuttonalliance.org/testing
+  type: Certification
+  note: Green Button certification program page; no Southern Company entity listed
+- url: https://github.com/apearson/southern-company-api
+  type: ThirdParty
+  note: unofficial reverse-engineered client library; hosts and flow documented above
+- url: https://nectarclimate.com/utilities/georgia-power-co
+  type: ThirdParty
+  note: >-
+    vendor data-access guide asserting no Green Button, no public API, and an in-development EIX;
+    used only to corroborate the absences that were independently probed, and flagged as unverified
+    for the EIX claim
