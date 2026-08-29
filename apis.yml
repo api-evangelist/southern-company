@@ -22,6 +22,17 @@ description: >-
   gateway is live at api.southernco.com and developer.southernco.com resolves behind an Imperva
   edge, so the platform machinery exists internally, but no proxy, no specification and no
   documentation are published to anyone outside the company.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.southerncompany.com/etc.clientlibs/global/clientlibs/clientlib-site/resources/icon-192x192.png
 tags:
 - Energy
